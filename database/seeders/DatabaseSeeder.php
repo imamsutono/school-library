@@ -16,8 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(100)->create();
-        Author::factory(100)->create();
-        Book::factory(100)->create();
+        // User::factory(100)->create();
+        // Author::factory(100)->create();
+        // Book::factory(100)->create();
+
+        $this->call([
+            RoleSeeder::class,
+            UserSeeder::class
+        ]);
     }
 }

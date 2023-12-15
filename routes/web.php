@@ -30,17 +30,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::controller(UserController::class)
-        ->prefix('/user')
-        ->as('user.')
-        ->group(function() {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-        });
-    
-    Route::resource('author', AuthorController::class);
-    Route::resource('book', BookController::class);
+    Route::middleware('role:admin')->group(function() {
+        Route::controller(UserController::class)
+            ->prefix('/user')
+            ->as('user.')
+            ->group(function() {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+            });
+        
+        Route::resource('author', AuthorController::class);
+        Route::resource('book', BookController::class);
+    });
 });
 
 require __DIR__.'/auth.php';
